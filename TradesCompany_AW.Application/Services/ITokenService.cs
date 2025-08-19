@@ -10,7 +10,7 @@ namespace TradesCompany_AW.Application.Services
 {
     public interface ITokenService
     {
-        string GenerateAccessToken(ApplicationUser user, IList<string> roles);
+        string GenerateAccessToken(ApplicationUser user, string role);
         string GenerateRefreshToken();
         Task<TokenResponse> RefreshTokenAsync(string accessToken, string refreshToken, string ipAddress);
         Task RevokeTokenAsync(string refreshToken, string ipAddress);

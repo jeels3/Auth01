@@ -1,6 +1,0 @@
-@TradesCompany_AW.Web_HostAddress = http://localhost:5248
-
-GET {{TradesCompany_AW.Web_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

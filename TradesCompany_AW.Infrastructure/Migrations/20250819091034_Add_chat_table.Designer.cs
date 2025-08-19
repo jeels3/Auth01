@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TradesCompany_AW.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TradesCompany_AW.Infrastructure.Data;
 namespace TradesCompany_AW.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250819091034_Add_chat_table")]
+    partial class Add_chat_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -293,7 +296,7 @@ namespace TradesCompany_AW.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ChannelName")
+                    b.Property<string>("ChannelNames")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
@@ -306,7 +309,7 @@ namespace TradesCompany_AW.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ChannelName")
+                    b.HasIndex("ChannelNames")
                         .IsUnique();
 
                     b.HasIndex("UserId");
@@ -383,39 +386,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.HasIndex("ReceiverId");
 
                     b.ToTable("isSeens");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("userId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("notifications");
                 });
 
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.RefreshToken", b =>
@@ -634,17 +604,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ChannelMessage");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Notification", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

@@ -4,10 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using TradesCompany_AW.Application.Repository;
 using TradesCompany_AW.Application.Services;
 using TradesCompany_AW.Domain.Entities;
 using TradesCompany_AW.Infrastructure.Data;
+using TradesCompany_AW.Infrastructure.Repository;
 using TradesCompany_AW.Infrastructure.Services;
+using TradesCompany_AW.Shared.Hubs;
+using TradesCompany_AW.Web.Services;
+using Microsoft.AspNetCore.SignalR;
+
 
 namespace TradesCompany_AW.Web
 {
@@ -58,13 +64,36 @@ namespace TradesCompany_AW.Web
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"])),
                     ClockSkew = TimeSpan.Zero
                 };
+                // Add Token in websocket request
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        // Check for token in query string
+                        var accessToken = context.Request.Query["access_token"];
+
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/notificationHub"))
+                        {
+                            context.Token = accessToken;
+                        }
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
             // Customer Services 
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IServiceRepository,ServiceRepository>();
+            builder.Services.AddScoped<ImageService>();
+            builder.Services.AddScoped<IChatRepository, ChatRepository>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
 
             builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddEndpointsApiExplorer();      
             // Swagger SetUp
             builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGen(options =>
@@ -97,6 +126,15 @@ namespace TradesCompany_AW.Web
                 });
             });
 
+            builder.Services.AddCors(options => {
+                options.AddPolicy("AllowAngularDev", p =>
+                  p.WithOrigins("http://localhost:4200")
+                   .AllowAnyHeader()
+                   .AllowAnyMethod()
+                   .AllowCredentials());
+            });
+            builder.Services.AddSingleton<IUserIdProvider, CustomUserIdProvider>();
+            builder.Services.AddSignalR();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline
@@ -105,12 +143,12 @@ namespace TradesCompany_AW.Web
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseCors("AllowAngularDev");
             app.UseHttpsRedirection();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-
+            app.MapHub<NotificationHub>("/notificationHub");
             app.Run();
         }
     }
