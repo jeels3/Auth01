@@ -31,7 +31,7 @@ namespace TradesCompany_AW.Infrastructure.Services
             _context = context;
         }
 
-        public string GenerateAccessToken(ApplicationUser user, IList<string> roles)
+        public string GenerateAccessToken(ApplicationUser user, string role)
         {
             var jwtSettings = _configuration.GetSection("JwtSettings");
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
@@ -44,10 +44,7 @@ namespace TradesCompany_AW.Infrastructure.Services
                 new Claim(ClaimTypes.Email, user.Email),
             };
 
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-            }
+            claims.Add(new Claim(ClaimTypes.Role, role));
 
             var token = new JwtSecurityToken(
                 issuer: jwtSettings["Issuer"],
@@ -97,7 +94,8 @@ namespace TradesCompany_AW.Infrastructure.Services
 
             // Generate new tokens
             var roles = await _userManager.GetRolesAsync(user);
-            var newAccessToken = GenerateAccessToken(user, roles);
+            var role = roles[0];
+            var newAccessToken = GenerateAccessToken(user, role);
             var newRefreshToken = GenerateRefreshToken();
 
             // Save new refresh token

@@ -7,12 +7,14 @@ using Microsoft.IdentityModel.Tokens;
 using System.Net.WebSockets;
 using System.Security.Claims;
 using TradesCompany_AW.Application.DTOs;
+using TradesCompany_AW.Application.Repository;
 using TradesCompany_AW.Application.Services;
 using TradesCompany_AW.Domain.Entities;
 using TradesCompany_AW.Infrastructure.Data;
 
 namespace TradesCompany_AW.Web.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -20,12 +22,16 @@ namespace TradesCompany_AW.Web.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ITokenService _tokenService;
         private readonly ApplicationDbContext _context;
+        private readonly IGenericRepository<ServiceMan> _serviceManGenericRepository;
 
-        public AuthController(UserManager<ApplicationUser> userManager, ITokenService tokenService, ApplicationDbContext context)
+        public AuthController(UserManager<ApplicationUser> userManager,
+            ITokenService tokenService, ApplicationDbContext context,
+            IGenericRepository<ServiceMan> serviceManGenericRepository)
         {
             _userManager = userManager;
             _tokenService = tokenService;
             _context = context;
+            _serviceManGenericRepository = serviceManGenericRepository;
         }
 
         [HttpPost("register")]
@@ -62,6 +68,13 @@ namespace TradesCompany_AW.Web.Controllers
             {
                 // Add to serviceMan
                 var ServiceTypeId = model.ServiceTypeId;
+                var serviceMan = new ServiceMan
+                {
+                    ServiceTypeId = (int)ServiceTypeId,
+                    UserId = user.Id,
+                };
+                await _serviceManGenericRepository.InsertAsync(serviceMan);
+                await _serviceManGenericRepository.SaveAsync();
             }
 
             return Ok(new { message = "User registered successfully" });
@@ -78,7 +91,8 @@ namespace TradesCompany_AW.Web.Controllers
                 return Unauthorized("Invalid email or password");
 
             var roles = await _userManager.GetRolesAsync(user);
-            var accessToken = _tokenService.GenerateAccessToken(user, roles);
+            var role = roles[0];
+            var accessToken = _tokenService.GenerateAccessToken(user, role);
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             // Save refresh token to database

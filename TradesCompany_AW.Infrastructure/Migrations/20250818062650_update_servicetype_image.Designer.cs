@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TradesCompany_AW.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TradesCompany_AW.Infrastructure.Data;
 namespace TradesCompany_AW.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250818062650_update_servicetype_image")]
+    partial class update_servicetype_image
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -220,204 +223,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelMessage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChannelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ChannelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ChanneldbId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChanneldbId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("channelMessages");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelUser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChannelId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ChanneldbId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChanneldbId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("channelUsers");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Channeldb", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ChannelName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatorId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChannelName")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("channeldb");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.CustomerBooking", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<DateTime?>("CompletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ServiceTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("WorkDetails")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ServiceTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("customerBookings");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.IsSeen", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ChannelMessageId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReceiverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("Seen")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("SeenDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ChannelMessageId");
-
-                    b.HasIndex("ReceiverId");
-
-                    b.ToTable("isSeens");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NotificationType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("userId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("notifications");
-                });
-
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -455,30 +260,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ServiceMan", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("ServiceTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ServiceTypeId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("serviceMan");
                 });
 
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ServiceType", b =>
@@ -553,102 +334,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelMessage", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.Channeldb", "Channeldb")
-                        .WithMany()
-                        .HasForeignKey("ChanneldbId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Channeldb");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelUser", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.Channeldb", "Channeldb")
-                        .WithMany("ChannelUsers")
-                        .HasForeignKey("ChanneldbId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Channeldb");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Channeldb", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.CustomerBooking", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ServiceType", "ServiceType")
-                        .WithMany()
-                        .HasForeignKey("ServiceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceType");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.IsSeen", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ChannelMessage", "ChannelMessage")
-                        .WithMany("IsSeen")
-                        .HasForeignKey("ChannelMessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ChannelMessage");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Notification", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
@@ -660,38 +345,9 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ServiceMan", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ServiceType", "ServiceTypes")
-                        .WithMany()
-                        .HasForeignKey("ServiceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ServiceTypes");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelMessage", b =>
-                {
-                    b.Navigation("IsSeen");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Channeldb", b =>
-                {
-                    b.Navigation("ChannelUsers");
                 });
 #pragma warning restore 612, 618
         }

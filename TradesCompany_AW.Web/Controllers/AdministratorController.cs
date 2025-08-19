@@ -9,7 +9,7 @@ namespace TradesCompany_AW.Web.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [Authorize(Roles = "ADMIN")]
+    //[Authorize(Roles = "ADMIN")]
     public class AdministratorController : ControllerBase
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -23,7 +23,7 @@ namespace TradesCompany_AW.Web.Controllers
         [HttpGet]
         public IActionResult GetRoles()
         {
-            var roles = _roleManager.Roles;
+            var roles = _roleManager.Roles.Select(r => new { r.Id, r.Name }).ToList();
             return Ok(roles);
         }
 
@@ -42,6 +42,7 @@ namespace TradesCompany_AW.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRole([FromBody] string roleName)
         {
+
             if (string.IsNullOrWhiteSpace(roleName))
                 return BadRequest(new { message = "Role name cannot be empty" });
 
@@ -55,7 +56,7 @@ namespace TradesCompany_AW.Web.Controllers
 
             return Ok(new { message = "Role created successfully" });
         }
-
+          
         // PUT: api/roles/{id}
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRole(string id, [FromBody] string newRoleName)
@@ -68,7 +69,7 @@ namespace TradesCompany_AW.Web.Controllers
             var result = await _roleManager.UpdateAsync(role);
 
             if (!result.Succeeded)
-                return BadRequest(result.Errors);
+                return BadRequest(result.Errors);   
 
             return Ok(new { message = "Role updated successfully" });
         }
