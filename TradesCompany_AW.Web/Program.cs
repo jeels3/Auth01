@@ -91,6 +91,7 @@ namespace TradesCompany_AW.Web
             builder.Services.AddScoped<IChatRepository, ChatRepository>();
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+            builder.Services.AddScoped<IBookingRepository, BookRepository>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();      
