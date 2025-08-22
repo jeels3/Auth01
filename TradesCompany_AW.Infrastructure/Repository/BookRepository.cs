@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TradesCompany_AW.Application.DTOs;
 using TradesCompany_AW.Application.Repository;
+using TradesCompany_AW.Domain.Entities;
 using TradesCompany_AW.Infrastructure.Data;
 
 namespace TradesCompany_AW.Infrastructure.Repository
@@ -31,7 +32,27 @@ namespace TradesCompany_AW.Infrastructure.Repository
                     customerName = cb.User.UserName,
                     WorkDetails = cb.WorkDetails,
                     Price = cb.Price,
-                    CreatedAt = cb.CreatedAt,
+                    CreatedAt = cb.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                    CompletedAt = cb.CompletedAt,
+                    Status = cb.Status,
+
+                })
+                .ToListAsync();
+        }
+
+        public async Task<List<BookingByServiceTypeDto>> GetAllBookingByUserId(string userId)
+        {
+            return await _context.customerBookings.Where(cb => cb.UserId == userId)
+                .Include(cb => cb.User)
+                .Select(cb => new BookingByServiceTypeDto
+                {
+                    Id = cb.id,
+                    ServiceTypeId = cb.ServiceTypeId,
+                    UserId = cb.UserId,
+                    customerName = cb.User.UserName,
+                    WorkDetails = cb.WorkDetails,
+                    Price = cb.Price,
+                    CreatedAt = cb.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
                     CompletedAt = cb.CompletedAt,
                     Status = cb.Status,
 

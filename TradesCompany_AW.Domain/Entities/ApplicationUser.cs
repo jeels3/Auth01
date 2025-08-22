@@ -10,6 +10,7 @@ namespace TradesCompany_AW.Domain.Entities
     public class ApplicationUser : IdentityUser
     {
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+        public Address? Address { get; set; }
     }
 
 }

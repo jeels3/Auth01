@@ -15,8 +15,9 @@ namespace TradesCompany_AW.Application.DTOs
         public string customerName { get; set; }
         public string WorkDetails { get; set; } = null!;
         public decimal Price { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public string Status { get; set; } = "Pending";
+        public bool IsQuotationSend { get; set; }
     }
 }

@@ -11,5 +11,6 @@ namespace TradesCompany_AW.Application.Repository
     {
         Task<ServiceType> GetServiceByServiceName(string serviceName);
         Task<int> GetServiceTypeByUserId(string userId);
+        Task<int> GetServiceManIdByUserId (string userId);
     }
 }

@@ -18,5 +18,6 @@ namespace TradesCompany_AW.Domain.Entities
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         public DateTime? CompletedAt { get; set; }
         public string Status { get; set; } = "Pending";
+        public ICollection<Quotation> quotations { get; set; } = new List<Quotation>();
     }
 }

@@ -29,6 +29,13 @@ namespace TradesCompany_AW.Infrastructure.Repository
         {
             return await _context.serviceMan.Where(sm => sm.UserId == userId).Select(sm => sm.ServiceTypeId).FirstOrDefaultAsync();
         }
+
+        public async Task<int> GetServiceManIdByUserId(string userId)
+        {
+            return await _context.serviceMan.Where(ServiceMan => ServiceMan.UserId == userId)
+                .Select(sm => sm.id)
+                .FirstOrDefaultAsync();
+        }
     }
 
 }

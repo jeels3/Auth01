@@ -7,9 +7,8 @@ using TradesCompany_AW.Application.DTOs;
 
 namespace TradesCompany_AW.Application.Repository
 {
-    public interface IBookingRepository
+    public interface IProfileRepository
     {
-        public Task<List<BookingByServiceTypeDto>> GetAllBookingByServiceType(int serviceTypeId);
-        public Task<List<BookingByServiceTypeDto>> GetAllBookingByUserId(string userId);
+        public Task<ProfileDto> GetProfileDetails(string userId);
     }
 }

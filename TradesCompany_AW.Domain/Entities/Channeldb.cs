@@ -13,5 +13,8 @@ namespace TradesCompany_AW.Domain.Entities
         public string CreatorId { get; set; }
         public ApplicationUser User { get; set; }
         public List<ChannelUser> ChannelUsers { get; set; } = new List<ChannelUser>();
+        //public string manil { get; set; } // false
+        //public string? tushar { get; set; } // true
+        //public string Milan { get; set; } = null!; // false
     }
 }

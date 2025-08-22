@@ -30,6 +30,17 @@ namespace TradesCompany_AW.Infrastructure.Data
                 .HasForeignKey(i => i.ChannelMessageId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Quotation>()
+                .HasOne(q => q.customerBooking)
+                .WithMany(cb => cb.quotations) 
+                .HasForeignKey(q => q.BookingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Quotation>()
+                .HasOne(q => q.ServiceMan)
+                .WithMany(sm => sm.quotations)
+                .HasForeignKey(q => q.ServiceManId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public DbSet<ServiceType> serviceTypes { get; set; }
@@ -40,6 +51,7 @@ namespace TradesCompany_AW.Infrastructure.Data
         public DbSet<ChannelMessage> channelMessages { get; set; }
         public DbSet<IsSeen> isSeens { get; set; }
         public DbSet<Notification> notifications { get; set; }
+        public DbSet<Quotation> quotations { get; set; }
 
     }
 }

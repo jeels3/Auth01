@@ -92,6 +92,8 @@ namespace TradesCompany_AW.Web
             builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
             builder.Services.AddScoped<IBookingRepository, BookRepository>();
+            builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();      
@@ -99,7 +101,7 @@ namespace TradesCompany_AW.Web
             builder.Services.AddSwaggerGen();
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Trades API", Version = "v1" });
 
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
