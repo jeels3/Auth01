@@ -10,5 +10,7 @@ namespace TradesCompany_AW.Application.Repository
     public interface IServiceRepository
     {
         Task<ServiceType> GetServiceByServiceName(string serviceName);
+        Task<int> GetServiceTypeByUserId(string userId);
+        Task<int> GetServiceManIdByUserId (string userId);
     }
 }

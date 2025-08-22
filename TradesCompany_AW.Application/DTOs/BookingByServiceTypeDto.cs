@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TradesCompany_AW.Domain.Entities;
 
-namespace TradesCompany_AW.Domain.Entities
+namespace TradesCompany_AW.Application.DTOs
 {
-    public class CustomerBooking
+    public class BookingByServiceTypeDto
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public int ServiceTypeId { get; set; }
-        public ServiceType ServiceType { get; set; } = null!;
         public string UserId { get; set; }
-        public ApplicationUser User { get; set; } = null!;
+        public string customerName { get; set; }
         public string WorkDetails { get; set; } = null!;
         public decimal Price { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string CreatedAt { get; set; }
         public DateTime? CompletedAt { get; set; }
         public string Status { get; set; } = "Pending";
-        public ICollection<Quotation> quotations { get; set; } = new List<Quotation>();
+        public bool IsQuotationSend { get; set; }
     }
 }

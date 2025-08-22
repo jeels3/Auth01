@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TradesCompany_AW.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using TradesCompany_AW.Infrastructure.Data;
 namespace TradesCompany_AW.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250822064254_add_address_table")]
+    partial class add_address_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -179,14 +182,7 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("Address");
                 });
@@ -197,6 +193,9 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Addressid")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -244,6 +243,8 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Addressid");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -454,43 +455,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.ToTable("notifications");
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Quotation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ServiceDetails")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ServiceManId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("ServiceManId");
-
-                    b.ToTable("quotations");
-                });
-
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<int>("Id")
@@ -626,15 +590,13 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Address", b =>
+            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
-                        .WithOne("Address")
-                        .HasForeignKey("TradesCompany_AW.Domain.Entities.Address", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("TradesCompany_AW.Domain.Entities.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("Addressid");
 
-                    b.Navigation("User");
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ChannelMessage", b =>
@@ -733,25 +695,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Quotation", b =>
-                {
-                    b.HasOne("TradesCompany_AW.Domain.Entities.CustomerBooking", "customerBooking")
-                        .WithMany("quotations")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("TradesCompany_AW.Domain.Entities.ServiceMan", "ServiceMan")
-                        .WithMany("quotations")
-                        .HasForeignKey("ServiceManId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("ServiceMan");
-
-                    b.Navigation("customerBooking");
-                });
-
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("TradesCompany_AW.Domain.Entities.ApplicationUser", "User")
@@ -784,8 +727,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
 
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ApplicationUser", b =>
                 {
-                    b.Navigation("Address");
-
                     b.Navigation("RefreshTokens");
                 });
 
@@ -797,16 +738,6 @@ namespace TradesCompany_AW.Infrastructure.Migrations
             modelBuilder.Entity("TradesCompany_AW.Domain.Entities.Channeldb", b =>
                 {
                     b.Navigation("ChannelUsers");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.CustomerBooking", b =>
-                {
-                    b.Navigation("quotations");
-                });
-
-            modelBuilder.Entity("TradesCompany_AW.Domain.Entities.ServiceMan", b =>
-                {
-                    b.Navigation("quotations");
                 });
 #pragma warning restore 612, 618
         }

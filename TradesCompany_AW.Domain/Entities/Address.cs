@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace TradesCompany_AW.Domain.Entities
 {
-    public class ServiceMan
+    public class Address
     {
         public int id {  get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string PinCode { get; set; }
+        public string Street { get; set; }
         public string UserId { get; set; }
         public ApplicationUser User { get; set; }
-        public int ServiceTypeId { get; set; }
-        public ServiceType ServiceTypes { get; set; }
-        public ICollection<Quotation> quotations { get; set; } = new List<Quotation>();
-
     }
 }
