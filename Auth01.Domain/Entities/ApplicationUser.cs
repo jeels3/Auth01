@@ -9,6 +9,9 @@ namespace Auth01.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? ProfilePictureUrl { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
     }
 

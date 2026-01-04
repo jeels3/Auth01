@@ -8,6 +8,9 @@ using Auth01.Application.Services;
 using Auth01.Domain.Entities;
 using Auth01.Infrastructure.Data;
 using Auth01.Infrastructure.Services;
+using Auth01.Web.Middleware;
+using Auth01.Application.Interfaces;
+using AspNetCoreRateLimit;
 
 
 namespace Auth01.Web
@@ -63,6 +66,14 @@ namespace Auth01.Web
 
             // Services 
             builder.Services.AddScoped<ITokenService, TokenService>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
+            builder.Services.AddScoped<IGoogleService, GoogleService>();
+
+            // Rate Limiting
+            builder.Services.AddMemoryCache();
+            builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));
+            builder.Services.AddInMemoryRateLimiting();
+            builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();      
@@ -115,6 +126,8 @@ namespace Auth01.Web
             }
             app.UseCors("AllowAll");
             app.UseHttpsRedirection();
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseIpRateLimiting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
